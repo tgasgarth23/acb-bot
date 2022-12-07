@@ -83,7 +83,7 @@ def aiBot(input):
     response = openai.Completion.create(
     model = 'text-davinci-003',
     prompt = input,
-    max_tokens = 200o
+    max_tokens = 2000
     )
     print(response)
     return response.get('choices')[0].get('text')
