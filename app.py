@@ -109,6 +109,8 @@ BrotherBot v1.13.0 Commands:
 
 "!Communism" - Learn about the economic theory of Communism
 
+"!Chat 'Your input'" - Chat with an ai bot
+
 "!Help" - To get BroBot commands
     '''
     return msg
