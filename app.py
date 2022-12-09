@@ -72,7 +72,10 @@ def parse_message(data):
     elif receivedMessage[0].lower().strip() == '!communism':
         msg = getCommunism()
     elif '!chat' in receivedMessage[0].lower().strip():
-        msg = "Ligma Balls Bitch @{}!".format(data['name'])
+        if data['name'] == 'Trevor Gasgarth':
+            msg = aiBot(receivedMessage)
+        else:
+            msg = "Ligma Balls Bitch @{}!".format(data['name'])
     elif receivedMessage[0].lower().strip() == '!help':
         msg = getHelp()
     return msg
