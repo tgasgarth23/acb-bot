@@ -96,6 +96,7 @@ def aiBot(input):
     )
     print(response)
     response = response.get('choices')[0].get('text')
+    response = response.strip()
     arr = []
     while len(response) > 0:
         if len(response) > 1000:
