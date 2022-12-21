@@ -75,7 +75,8 @@ def parse_message(data):
         if data['name'] == 'Trevor Gasgarth':
             msg = aiBot(receivedMessage)
         else:
-            msg = "Ligma Balls Bitch @{}!".format(data['name'])
+            # msg = "Ligma Balls Bitch @{}!".format(data['name'])
+            msg = aiBot(receivedMessage)
     elif receivedMessage[0].lower().strip() == '!help':
         msg = getHelp()
     return msg
