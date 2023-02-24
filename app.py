@@ -121,7 +121,7 @@ BrotherBot v1.13.0 Commands:
 
 "!Fun" - To get the weekend's schedule
 
-"!Breakfast/Lunch/Dinner/Late Night" - Get the Valentine Dining Hall meals for the specified meal
+"!Breakfast/Lunch/Dinner/LateNight" - Get the Valentine Dining Hall meals for the specified meal
 
 "!gng" - Get the Grab and Go Menu for the day
 
