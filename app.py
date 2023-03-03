@@ -296,9 +296,7 @@ def getQuote():
     '''
     This is the function to get an AP quote
     '''
-    quotes = ['I will just be her side hoe', 'Yo those bus rides are gonna be litty', 'I gotta funny feeling about tonight',
-            'You know... I could just delete my instagram', 'I am the bag', 'Nah bro, I just wanna be her baby daddy',
-            'Do not touch my chunkys', 'I smell delicious', 'If I was on steroids and I looked like this, it would be a disappointment', "You don't know lil Tjay!?"]
+    quotes = ["All baseball players are at least 25% Gay", "LIMOAAANNNNN", "Starting to think that ACB deserves the hate!", "LeAdErShIp OpPoRtUnItY"]
     msg = random.choice(quotes)
     return msg
 
