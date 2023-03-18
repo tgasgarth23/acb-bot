@@ -8,6 +8,7 @@ import random
 from flask import Flask, request
 from pathlib import Path
 from datetime import datetime
+import pytz
 import textwrap
 import openai
 
@@ -58,13 +59,13 @@ def parse_message(data):
     elif receivedMessage[0].lower().strip() == '!news':
         msg = getNews()
     elif receivedMessage[0].lower().strip() == '!breakfast':
-        msg = getMeal_Updated('Breakfast')
+        msg = getMeal('Breakfast')
     elif receivedMessage[0].lower().strip() == '!lunch':
-        msg = getMeal_Updated('Lunch')
+        msg = getMeal('Lunch')
     elif receivedMessage[0].lower().strip() == '!dinner':
-        msg = getMeal_Updated('Dinner')
+        msg = getMeal('Dinner')
     elif receivedMessage[0].lower().strip() == '!latenight':
-        msg = getMeal_Updated('Late Night')
+        msg = getMeal('Late-Night')
     elif receivedMessage[0].lower().strip() == '!gng':
         msg = getGNG()
     elif receivedMessage[0].lower().strip() == '!ligma':
@@ -72,11 +73,7 @@ def parse_message(data):
     elif receivedMessage[0].lower().strip() == '!communism':
         msg = getCommunism()
     elif '!chat' in receivedMessage[0].lower().strip():
-        if data['name'] == 'Trevor Gasgarth':
-            msg = aiBot(receivedMessage)
-        else:
-            # msg = "Ligma Balls Bitch @{}!".format(data['name'])
-            msg = aiBot(receivedMessage)
+        msg = aiBot(receivedMessage)
     elif receivedMessage[0].lower().strip() == '!help':
         msg = getHelp()
     return msg
@@ -86,7 +83,7 @@ def aiBot(input):
     
     input = input[0]
     input = input[6:]
-    print(f"Input:\t{input} \n")
+    # print(f"Input:\t{input} \n")
     api_key = os.getenv('API')
     openai.organization = 'org-9JJxC5Dd7efT1PTXawq62Hl9'
     openai.api_key = api_key
@@ -95,7 +92,7 @@ def aiBot(input):
     prompt = input,
     max_tokens = 4020
     )
-    print(response)
+    # print(response)
     response = response.get('choices')[0].get('text')
     response = response.strip()
     arr = []
@@ -174,121 +171,20 @@ def getWeather():
 
     return msg
 
+
 def getMeal(meal):
     '''
     This is the function to get the current meal. If they change the meal website, this will be broken.
     '''
-
-    # get the current time to pass into the val page
-    date = strftime("%Y-%m-%d", gmtime())
-
-    # get the current val page
-    msg = ''
-    counter = 0
-    page = requests.get('https://www.amherst.edu/campuslife/housing-dining/dining/menu')
-    soup = BeautifulSoup(page.content, 'html.parser')
-    for meal in soup.find_all(id='dining-menu-' + date + '-' + meal):
-        for string in meal.strings:
-            if counter % 2 == 1 or counter == 0:
-                string += ':'
-            counter += 1
-            msg += string + '\n\n'
-     
-    return msg
-
-def getMeal_Updated(meal):
-    '''
-    This is the function to get the current meal. If they change the meal website, this will be broken.
-    '''
-
-    today = datetime.today().strftime('%A, %B %d, %Y') #ex: Monday, August 29, 2022
-    #if day number is single digit, remove the extra 0 (ex: September 01 -> September 1)
-    dayNum = today.split(" ")[2] #day number will be the third element in "Monday, August 29, 2022" format
-    if dayNum.startswith("0"):
-      dayNum_edited = dayNum[1:]
-      today = today.replace(dayNum, dayNum_edited, 1)
-    
-    page = requests.get('https://www.amherst.edu/campuslife/housing-dining/dining/menu', verify = False)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    # results = soup.find_all(id='dining-menu-' + date + '-' + meal)
-    results = soup.find(text=today)
-    # print(results.parent)
-    meals = results.parent.find_next('section').find_all('article')
-    #print(results.parent.find_next('section'))
-    msg = ''
-    lineNum = 0
-    mealDict = {
-        "Breakfast" : 0,
-        "Lunch" : 1,
-        "Dinner" : 2,
-        "Late Night" : 3
-    }
-    
-    mealNum = mealDict[meal]
-    if mealNum < 3:
-        # Formatting the meals
-        for string in meals[mealNum].strings:
-            string = str(string)
-            if string=="\n":
-                pass
-            else:
-                if lineNum==0:
-                    string = string + ":"+"\n"
-                else:
-                    if lineNum%2==1:
-                        string = "\n"+"***" + string + "***"
-                    else:
-                        string = string
-                msg+=string+'\n'
-                lineNum+=1
-        msg = "\n".join(msg.split("\n")[:-2])
-
-    if mealNum >= len(meals):
-        return 'No Late Night Today'
-    elif mealNum == 3:
-        for index, i in enumerate(meals[mealNum].strings):
-            i = str(i)
-            if i =="\n":
-                continue
-            if lineNum == 0:
-                i+="\n\n"
-            lineNum+=1
-            i = i.replace('; ','\n')
-            msg+=i
-    return msg
+    url = 'https://amherst.nutrislice.com/menu/valentine-hall/'
+    mealurl = url + meal + '/print-menu/month/' + datetime.now(pytz.timezone('America/New_York')).strftime('%Y-%m-%d')
+    return mealurl
 
 def getGNG():
     '''
     This is the function to get the current meal. If they change the meal website, this will be broken.
     '''
-    today = datetime.today().strftime('%A, %B %d, %Y') #ex: Monday, August 29, 2022
-    weekend = ['Saturday','Sunday']
-    for i in weekend:
-        if i in today:
-            return "No Grab-n-Go today"
-    #if day number is single digit, remove the extra 0 (ex: September 01 -> September 1)
-    dayNum = today.split(" ")[2] #day number will be the third element in "Monday, August 29, 2022" format
-    if dayNum.startswith("0"):
-      dayNum_edited = dayNum[1:]
-      today = today.replace(dayNum, dayNum_edited, 1)
-
-    page = requests.get('https://www.amherst.edu/campuslife/housing-dining/dining/dining-options-and-menus/grab-n-go-menu', verify = False)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    results = soup.find(text=today)
-    meals = results.parent.parent.parent.strings
-    copyMeals = []
-    chars = 'qwertyuiopasdfghjklzxcvbnm,.1234567890"QWERTYUIOPASDFGHJKLZXCVBNM &'
-    for i in meals:
-        line = ''
-        for j in i:
-            if j in chars:
-                line+=j
-        if not line == '':
-            copyMeals.append(line)
-    msg = ''
-    for i in copyMeals:
-        msg+=i
-        msg+='\n\n'
+    msg = 'Not working' 
     return msg
 
 def getQuote():
