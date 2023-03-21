@@ -130,6 +130,8 @@ BrotherBot v1.13.0 Commands:
 
 "!Chat 'Your input'" - Chat with an ai bot
 
+"!Loop" - Who has loop responsibility today
+
 "!Help" - To get BroBot commands
     '''
     return msg
@@ -228,5 +230,5 @@ def getCommunism():
     return msg
 
 def getLoop():
-    msg = 'Naav'
+    msg = 'Naav has loops responsibility today'
     return msg
