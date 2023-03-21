@@ -76,6 +76,8 @@ def parse_message(data):
         msg = aiBot(receivedMessage)
     elif receivedMessage[0].lower().strip() == '!help':
         msg = getHelp()
+    elif receivedMessage[0].lower().strip() == '!loop':
+        msg = getLoop() 
     return msg
 
 
@@ -223,4 +225,8 @@ def getCommunism():
           'https://en.wikipedia.org/wiki/Soviet_war_crimes\n' \
           'https://en.wikipedia.org/wiki/Great_Chinese_Famine\n' \
           'https://en.wikipedia.org/wiki/1989_Tiananmen_Square_protests_and_massacre'
+    return msg
+
+def getLoop():
+    msg = 'Naav'
     return msg
