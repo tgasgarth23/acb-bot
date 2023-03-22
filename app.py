@@ -230,5 +230,5 @@ def getCommunism():
     return msg
 
 def getLoop():
-    msg = 'Naav has loops responsibility today'
+    msg = 'Christian Pedro has loops responsibility today'
     return msg
